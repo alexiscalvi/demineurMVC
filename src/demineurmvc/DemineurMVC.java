@@ -46,7 +46,7 @@ public class DemineurMVC extends Application {
         stage.setTitle("Demineur");
         
         Group root = new Group();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 500, 500, Color.WHITE);
         //creation du terrain
         
         root.getChildren().add(menuBar);
