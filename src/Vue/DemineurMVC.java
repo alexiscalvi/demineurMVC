@@ -6,24 +6,24 @@
 package Vue;
 
 import Modèle.Modele;
-import java.awt.event.MouseEvent;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -31,11 +31,9 @@ import javafx.stage.Stage;
  *
  * @author calvi
  */
-public class DemineurMVC extends Application {
+public class DemineurMVC extends Application  {
     
-    // modèle : ce qui réalise le calcule de l'expression
     private Modele m;
-    // affiche la saisie et le résultat
     private Text affichage;
     private Modele gridGame;
     
@@ -43,16 +41,15 @@ public class DemineurMVC extends Application {
     public void start(Stage stage) {
         Menu partyMenu = new Menu("Option"); 
         MenuItem newParty = new MenuItem("Nouvelle partie"); 
-        Menu helpMenu = new Menu("Aide"); 
         MenuBar menuBar = new MenuBar(); 
         partyMenu.getItems().add(newParty);
-        menuBar.getMenus().addAll(partyMenu, helpMenu);
+        menuBar.getMenus().addAll(partyMenu);
         stage.setTitle("Demineur");
         newParty.setOnAction(event -> {
-            //Création nouvelle partie = nouveau modèle
             this.gridGame = new Modele(3,5,5);
         });
-
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
         Group root = new Group();
         Scene scene = new Scene(root, 500, 500, Color.WHITE);
         //creation du terrain
@@ -62,23 +59,69 @@ public class DemineurMVC extends Application {
         borderPane.setTop(menuBar);  
         root.getChildren().addAll(borderPane);
         
-        
-        GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
+        newParty.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent t)
+            {
+                Dialog param = new Dialog();
+                param.setResizable(false);
+                param.setTitle("New game");
+                GridPane gridNew = new GridPane();
+                Label lx = new Label("Nombre de colonnes : ");
+                TextNewGame tx = new TextNewGame();
+                Label ly = new Label("Nombre de lignes : ");
+                TextNewGame ty = new TextNewGame();
+                Label lb = new Label("Nombre de mines : ");
+                TextNewGame tb = new TextNewGame();
+                gridNew.add(lx, 0, 0);
+                gridNew.add(ly, 0, 1);
+                gridNew.add(lb, 0, 2);
+                gridNew.add(tx, 1, 0);
+                gridNew.add(ty, 1, 1);
+                gridNew.add(tb, 1, 2);
+                ButtonType create = new ButtonType("Nouvelle partie", ButtonBar.ButtonData.OK_DONE);
+                ButtonType cancel = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+                param.getDialogPane().getButtonTypes().addAll(cancel,create);
+                param.getDialogPane().setContent(gridNew);
+                param.setContentText("Nouvelle aprtie");
+                Optional<ButtonType> result = param.showAndWait();
+                if(result.isPresent() && result.get().getButtonData()==ButtonBar.ButtonData.OK_DONE)
+                {
+                    int x=Integer.parseInt(tx.getText());
+                    int y=Integer.parseInt(ty.getText());
+                    int b=Integer.parseInt(tb.getText());
+                    gridPane.getChildren().clear();
+                    m = new Modele(b,x,y);
+                    for(int i=0; i<x; i++)
+                    {
+                        for(int j=0; j<y; j++)
+                        {
+                            VueCellule cv = new VueCellule(m.getCellule(j, i),m);
+                            gridPane.add(cv, i, j);
+                        }
+                    }
+                    borderPane.setCenter(gridPane);
+                }
+            }
+        });
+
+        gridPane.getChildren().clear();
         m = new Modele(10,8,8);
         for(int i=0; i<8; i++)
         {
             for(int j=0; j<8; j++)
             {
-                VueCellule cv = new VueCellule(m.getCellule(i, j));
+                VueCellule cv = new VueCellule(m.getCellule(i, j),m);
                 gridPane.add(cv, i, j);
             }
         }
         borderPane.setCenter(gridPane);
+
+        borderPane.setCenter(gridPane);
         stage.setScene(scene);
         stage.show();
-        
-        
+
     }
     
      public static void main(String[] args) {

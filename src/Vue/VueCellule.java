@@ -5,7 +5,9 @@
  */
 package Vue;
 
+import Controleur.Controleur_Cellule;
 import Modèle.Cellule;
+import Modèle.Modele;
 import java.util.Observable;
 import java.util.Observer;
 import javafx.scene.control.Button;
@@ -20,12 +22,15 @@ public class VueCellule extends Button implements Observer{
     private Cellule c;
     public Image img = new Image(VueCellule.class.getResource("/images/Masquer.png").toExternalForm());
     
-    public VueCellule (Cellule c){
+    public VueCellule (Cellule c, Modele m){
         this.c=c;
+        this.c.addObserver(this);
         ImageView im = new ImageView(this.img);
         im.setFitWidth(30);
         im.setFitHeight(30);
         this.setGraphic(im);
+        Controleur_Cellule controleur = new Controleur_Cellule(c, this, m);
+        this.setOnMouseClicked(controleur);
     }
     
     @Override
@@ -35,7 +40,7 @@ public class VueCellule extends Button implements Observer{
             switch(this.c.getBomb())
             {
                 case 0:
-                    this.img = new Image(VueCellule.class.getResource("/images/1.png").toExternalForm());
+                    this.img = new Image(VueCellule.class.getResource("/images/empty.png").toExternalForm());
                     break;
                 case 1:
                     this.img = new Image(VueCellule.class.getResource("/images/1.png").toExternalForm());
@@ -62,7 +67,7 @@ public class VueCellule extends Button implements Observer{
                     this.img = new Image(VueCellule.class.getResource("/images/8.png").toExternalForm());
                     break;
                 default:
-                    this.img = new Image(VueCellule.class.getResource("/images/1.png").toExternalForm());
+                    this.img = new Image(VueCellule.class.getResource("/images/empty.png").toExternalForm());
                     break;
             }
             if(this.c.isBomb())
@@ -79,12 +84,12 @@ public class VueCellule extends Button implements Observer{
             }
             else
             {
-                this.img = new Image(VueCellule.class.getResource("/images/1.png").toExternalForm());
+                this.img = new Image(VueCellule.class.getResource("/images/Masquer.png").toExternalForm());
             }
         }
         ImageView im = new ImageView(this.img);
-        im.setFitWidth(100);
-        im.setFitHeight(100);
+        im.setFitWidth(30);
+        im.setFitHeight(30);
         this.setGraphic(im);
     }
     

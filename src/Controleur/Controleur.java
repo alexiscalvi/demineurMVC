@@ -5,6 +5,8 @@
  */
 package Controleur;
 
+import Modèle.Modele;
+
 /**
  *
  * @author Lucas
@@ -12,6 +14,7 @@ package Controleur;
 public class Controleur {
     
     public Controleur(){
-        
     }
+    
+
 }

@@ -19,12 +19,16 @@ public class Cellule extends Observable{
     private boolean bomb;
     private StateCase state;
     ArrayList<Cellule> neighbors;
+    private boolean discover;
+    private Modele m;
     
 
-    public Cellule() {
+    public Cellule(Modele m) {
+        this.m=m;
         this.neighbors=new ArrayList<>();
         bomb=false;
         state=StateCase.UNVISIBLE;
+        discover=false;
     }
     
     public void showCellule(){
@@ -38,40 +42,53 @@ public class Cellule extends Observable{
     public void setBomb(){
         this.bomb=true;
     }
+    
+    public void addBomb(){
+        this.nb_bomb++;
+    }
     public void addNeighbors(Cellule newNeighbor){
         neighbors.add(newNeighbor);
     }
+    
+    
     public void discover(){
-        
-        if (this.isBomb()) setVisible();
-            
-        
-        else{
-            for(Cellule c: neighbors){
-                if (c.isBomb()) nb_bomb++;
-            }
-        if(nb_bomb==0){
+        if(!this.isFlag() && !discover){
             this.setVisible();
-            for(Cellule c: neighbors){
-                c.discover();
+            if(!this.bomb){
+                for(Cellule c1: neighbors){
+                    if (c1.isBomb()) this.addBomb();
+                }
+                discover=true;
+                if(nb_bomb==0){
+                    for(Cellule c1: neighbors){
+                        c1.discover();
+                    }
+                }
             }
-        }
+            this.modified();
         }
     }
     
     public void setVisible(){
         this.state=StateCase.VISIBLE;
     }
+    
     public void setFlag(){
         this.state=StateCase.FLAG;
     }
     
-   // public void boom(){
-     //   setVisible();
-    //}
+    public void removeFlag(){
+        this.state=StateCase.UNVISIBLE;
+    }
+    
+    public void changeFlag(){
+        if(state.equals(StateCase.UNVISIBLE)) setFlag();
+        else if(state.equals(StateCase.FLAG)) removeFlag();
+        this.modified();
+    }
     
     
-    
+  
     //tests
     public boolean isBomb(){
         return (bomb==true);
@@ -84,10 +101,17 @@ public class Cellule extends Observable{
         return (state==StateCase.FLAG);
     }
 
+    public void modified()
+    {
+        this.setChanged();
+        this.notifyObservers();
+    }
+    
     @Override
     public void notifyObservers()
     {
         super.notifyObservers();
     }
+
 }
 
