@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package demineurmvc;
+package Modèle;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  *
  * @author calvi
  */
-public class Cellule {
+public class Cellule extends Observable{
     
     
     private int nb_bomb=0; //bombes voisines
@@ -25,8 +26,14 @@ public class Cellule {
         bomb=false;
         state=StateCase.UNVISIBLE;
     }
-
     
+    public void showCellule(){
+        state=state.VISIBLE;
+    }
+    
+    public int getBomb(){
+        return this.nb_bomb;
+    }
     //actions
     public void setBomb(){
         this.bomb=true;
@@ -73,6 +80,14 @@ public class Cellule {
         return (state==StateCase.VISIBLE);
     }
     
-
+    public boolean isFlag(){
+        return (state==StateCase.FLAG);
     }
+
+    @Override
+    public void notifyObservers()
+    {
+        super.notifyObservers();
+    }
+}
 

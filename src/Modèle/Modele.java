@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package demineurmvc;
+package Modèle;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Random;
  *
  * @author calvi
  */
-public class Modele extends Observable{
+public final class Modele extends Observable{
     
     private ArrayList<Cellule> listCellule;
     private ArrayList<Integer> listBomb;
@@ -25,7 +25,8 @@ public class Modele extends Observable{
     private int NB_BOMB;
     private int cpt_bomb;
     private int NB_CASES;
-    Modele(int nb_bomb, int x, int y) {
+    
+    public Modele(int nb_bomb, int x, int y) {
         this.x_length=x;
         this.y_length=y;
         this.NB_BOMB=nb_bomb;
@@ -40,8 +41,7 @@ public class Modele extends Observable{
             }
         }
         initialization();
-        
-       
+
     }
     
     
@@ -53,15 +53,18 @@ public class Modele extends Observable{
     
     
     public void initializeNeighbors(){
-        for(int i=0;i<x_length;i++){
-            for(int j=0; j<y_length; j++){
+        for(int j=0; j<y_length; j++){
+            for(int i=0;i<x_length;i++){
                 int indice=x_length*j+i;
                 Cellule cellule=listCellule.get(indice);
-                
                 for(int k=-1;k<2;k++){
                     for(int l=-1;l<2;l++){
-                        int indice_2=indice+k*x_length+1;
-                        if(inField(i+k,j+l)) cellule.addNeighbors(listCellule.get(indice_2));
+                        if(k!=0 || l!=0){
+                            int indice_2=indice+(x_length)*(l)+(k);
+                            if(inField(i+k,j+l)){
+                                cellule.addNeighbors(listCellule.get(indice_2));
+                            }
+                        }
                     }
                 }
             }
@@ -71,9 +74,8 @@ public class Modele extends Observable{
     
     public void initializeBombs(){
         while(cpt_bomb<NB_BOMB){
-            Random r = new Random();
-            int alea = r.nextInt(NB_CASES);
-            if (listBomb.contains(alea)==false){
+            int alea = (int)(Math.random() *(NB_CASES));
+            if (!listBomb.contains(alea)){
                 listBomb.add(alea);
                 cpt_bomb++;
                 listCellule.get(alea).setBomb();
@@ -82,6 +84,10 @@ public class Modele extends Observable{
         
     }
     public boolean inField(int x, int y){
-        return(x>=0 && x<= x_length && y>=0 && y<=y_length);
+        return(x>=0 && x< x_length && y>=0 && y<y_length);
+    }
+    
+    public Cellule getCellule(int i, int j){
+        return listCellule.get(i*x_length+j);
     }
 }
