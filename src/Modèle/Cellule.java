@@ -51,7 +51,7 @@ public class Cellule extends Observable{
     }
     
     
-    public void discover(){
+    public boolean discover(){
         if(!this.isFlag() && !discover){
             this.setVisible();
             if(!this.bomb){
@@ -66,7 +66,9 @@ public class Cellule extends Observable{
                 }
             }
             this.modified();
+            return false;
         }
+        return true;
     }
     
     public void setVisible(){

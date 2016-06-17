@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
  *
  * @author Lucas
  */
-public class Controleur_Cellule extends Controleur implements EventHandler<MouseEvent>
+public class Controleur_Cellule implements EventHandler<MouseEvent>
 {
     /**
      * Concerned cell
@@ -36,7 +36,6 @@ public class Controleur_Cellule extends Controleur implements EventHandler<Mouse
      */
     public Controleur_Cellule(Cellule c, VueCellule cv, Modele m)
     {
-        super();
         this.c = c;
         this.cv = cv;
         this.m=m;
@@ -50,14 +49,14 @@ public class Controleur_Cellule extends Controleur implements EventHandler<Mouse
     public void handle(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY)//Left click
         {
-            c.discover();
-            if(c.isBomb()){
+            boolean check = c.discover();
+            if(c.isBomb() && !check){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("FIN DE LA PARTIE");
                 alert.setHeaderText("Vous avez perdu !");
                 alert.showAndWait();
             }
-            else if(end()){
+            else if(end() && !check){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("FIN DE LA PARTIE");
                 alert.setHeaderText("Vous avez gagné !");

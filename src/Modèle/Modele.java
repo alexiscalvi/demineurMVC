@@ -5,7 +5,6 @@
  */
 package Modèle;
 
-import Controleur.Controleur;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Observable;
@@ -42,7 +41,6 @@ public final class Modele{
             }
         }
         initialization();
-        Controleur controleur = new Controleur();
     }
     
     public void initialization(){

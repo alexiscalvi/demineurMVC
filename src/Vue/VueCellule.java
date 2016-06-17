@@ -10,9 +10,11 @@ import Modèle.Cellule;
 import Modèle.Modele;
 import java.util.Observable;
 import java.util.Observer;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -20,7 +22,7 @@ import javafx.scene.image.ImageView;
  */
 public class VueCellule extends Button implements Observer{
     private Cellule c;
-    public Image img = new Image(VueCellule.class.getResource("/images/Masquer.png").toExternalForm());
+    public Image img = new Image(VueCellule.class.getResource("/images/empty.png").toExternalForm());
     
     public VueCellule (Cellule c, Modele m){
         this.c=c;

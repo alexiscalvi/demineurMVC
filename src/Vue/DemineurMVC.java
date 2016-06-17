@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -58,50 +57,61 @@ public class DemineurMVC extends Application  {
         borderPane.prefWidthProperty().bind(scene.widthProperty());
         borderPane.setTop(menuBar);  
         root.getChildren().addAll(borderPane);
-        
+        int x=8;
+        int y=8;
+        int b=10;
         newParty.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent t)
             {
-                Dialog param = new Dialog();
-                param.setResizable(false);
-                param.setTitle("New game");
-                GridPane gridNew = new GridPane();
-                Label lx = new Label("Nombre de colonnes : ");
-                TextNewGame tx = new TextNewGame();
-                Label ly = new Label("Nombre de lignes : ");
-                TextNewGame ty = new TextNewGame();
-                Label lb = new Label("Nombre de mines : ");
-                TextNewGame tb = new TextNewGame();
-                gridNew.add(lx, 0, 0);
-                gridNew.add(ly, 0, 1);
-                gridNew.add(lb, 0, 2);
-                gridNew.add(tx, 1, 0);
-                gridNew.add(ty, 1, 1);
-                gridNew.add(tb, 1, 2);
-                ButtonType create = new ButtonType("Nouvelle partie", ButtonBar.ButtonData.OK_DONE);
-                ButtonType cancel = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
-                param.getDialogPane().getButtonTypes().addAll(cancel,create);
-                param.getDialogPane().setContent(gridNew);
-                param.setContentText("Nouvelle aprtie");
-                Optional<ButtonType> result = param.showAndWait();
-                if(result.isPresent() && result.get().getButtonData()==ButtonBar.ButtonData.OK_DONE)
-                {
-                    int x=Integer.parseInt(tx.getText());
-                    int y=Integer.parseInt(ty.getText());
-                    int b=Integer.parseInt(tb.getText());
-                    gridPane.getChildren().clear();
-                    m = new Modele(b,x,y);
-                    for(int i=0; i<x; i++)
-                    {
-                        for(int j=0; j<y; j++)
+                boolean check=false;
+                while(!check){
+                    Dialog param = new Dialog();
+                    param.setResizable(false);
+                    param.setTitle("New game");
+                    GridPane gridNew = new GridPane();
+                    Label lx = new Label("Nombre de colonnes : ");
+                    TextNewGame tx = new TextNewGame();
+                    Label ly = new Label("Nombre de lignes : ");
+                    TextNewGame ty = new TextNewGame();
+                    Label lb = new Label("Nombre de mines : ");
+                    TextNewGame tb = new TextNewGame();
+                    gridNew.add(lx, 0, 0);
+                    gridNew.add(ly, 0, 1);
+                    gridNew.add(lb, 0, 2);
+                    gridNew.add(tx, 1, 0);
+                    gridNew.add(ty, 1, 1);
+                    gridNew.add(tb, 1, 2);
+                    ButtonType create = new ButtonType("Nouvelle partie", ButtonBar.ButtonData.OK_DONE);
+                    ButtonType cancel = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    param.getDialogPane().getButtonTypes().addAll(cancel,create);
+                    param.getDialogPane().setContent(gridNew);
+                    param.setContentText("Nouvelle aprtie");
+                    try{
+                        Optional<ButtonType> result = param.showAndWait();
+                        int x=Integer.parseInt(tx.getText());
+                        int y=Integer.parseInt(ty.getText());
+                        int b=Integer.parseInt(tb.getText());
+                        if(result.isPresent() && result.get().getButtonData()==ButtonBar.ButtonData.OK_DONE && b<x*y)
                         {
-                            VueCellule cv = new VueCellule(m.getCellule(j, i),m);
-                            gridPane.add(cv, i, j);
+                            gridPane.getChildren().clear();
+                            m = new Modele(b,x,y);
+                            for(int i=0; i<x; i++)
+                            {
+                                for(int j=0; j<y; j++)
+                                {
+                                    VueCellule cv = new VueCellule(m.getCellule(j, i),m);
+                                    gridPane.add(cv, i, j);
+                                }
+                            }
+                            borderPane.setCenter(gridPane);
+                            check=true;
                         }
                     }
-                    borderPane.setCenter(gridPane);
+                    catch(Exception e){
+                        
+                    }
                 }
             }
         });
@@ -117,8 +127,8 @@ public class DemineurMVC extends Application  {
             }
         }
         borderPane.setCenter(gridPane);
-
         borderPane.setCenter(gridPane);
+
         stage.setScene(scene);
         stage.show();
 
