@@ -90,6 +90,10 @@ public class DemineurMVC extends Application  {
                     param.setContentText("Nouvelle aprtie");
                     try{
                         Optional<ButtonType> result = param.showAndWait();
+                        if(result.get().getButtonData()==ButtonBar.ButtonData.CANCEL_CLOSE)
+                        {
+                            check=true;
+                        }
                         int x=Integer.parseInt(tx.getText());
                         int y=Integer.parseInt(ty.getText());
                         int b=Integer.parseInt(tb.getText());

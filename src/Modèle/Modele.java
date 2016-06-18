@@ -25,7 +25,6 @@ public final class Modele{
     private int NB_BOMB;
     private int cpt_bomb;
     private int NB_CASES;
-    private boolean win;
     
     public Modele(int nb_bomb, int x, int y) {
         this.x_length=x;

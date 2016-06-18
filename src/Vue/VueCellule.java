@@ -28,8 +28,8 @@ public class VueCellule extends Button implements Observer{
         this.c=c;
         this.c.addObserver(this);
         ImageView im = new ImageView(this.img);
-        im.setFitWidth(30);
-        im.setFitHeight(30);
+        im.setFitWidth(18);
+        im.setFitHeight(18);
         this.setGraphic(im);
         Controleur_Cellule controleur = new Controleur_Cellule(c, this, m);
         this.setOnMouseClicked(controleur);
@@ -86,12 +86,12 @@ public class VueCellule extends Button implements Observer{
             }
             else
             {
-                this.img = new Image(VueCellule.class.getResource("/images/Masquer.png").toExternalForm());
+                this.img = new Image(VueCellule.class.getResource("/images/empty.png").toExternalForm());
             }
         }
         ImageView im = new ImageView(this.img);
-        im.setFitWidth(30);
-        im.setFitHeight(30);
+        im.setFitWidth(18);
+        im.setFitHeight(18);
         this.setGraphic(im);
     }
     

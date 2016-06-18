@@ -103,6 +103,7 @@ public class Cellule extends Observable{
         return (state==StateCase.FLAG);
     }
 
+    //Méthode pour communication avec l'observer VueCellule
     public void modified()
     {
         this.setChanged();
